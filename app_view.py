@@ -11,11 +11,17 @@ class Roulette:
         self.pos_r = 0
 
     def add_roulette_ui(self):
+
+        # フレーム
+        self.label_frame = tk.LabelFrame(self.root, text='ルーレット', bd=2, relief=tk.GROOVE, padx=10, pady=10)
+        self.label_frame.grid(column=0, row=1, padx=10, pady=10, sticky="nsew")
+
         # "回す"ボタン
         # self.mv = tk.Button(self.root, text="回す", command=self.roll_roulette)
         # self.mv.place(x=100, y=10)
-        self.lbl = tk.Label(self.root, text='当たり')
-        self.lbl.place(x=175, y=30)
+        self.lbl = tk.Label(self.label_frame, text='当たり')
+        # self.lbl.place(x=175, y=30)
+        self.lbl.grid(column=6,row=0,padx=5, pady=5)
 
         # 初期のイメージ設定
         original_image = Image.open("en2.png")
@@ -24,9 +30,9 @@ class Roulette:
 
         # ボタンを10個生成してリストに追加
         for r in range(9):
-            btn = tk.Button(self.root, image=self.loadimage)
+            btn = tk.Button(self.label_frame, image=self.loadimage if self.loadimage else None)
             btn["border"] = "0"
-            btn.place(x=30 * r, y=50)
+            btn.grid(column=r, row=1, padx=5, pady=5)  # ボタンを1行目に配置
             self.roulette_list.append(btn)
 
     def roll_roulette(self):
@@ -84,31 +90,29 @@ class VMoney:
     # 入金表示用
     def entry_money(self):
 
+        # フレーム
+        self.label_frame = tk.LabelFrame(self.root, text='決済', bd=2, relief=tk.GROOVE, padx=10, pady=10)
+        self.label_frame.grid(column=1, row=0, padx=10, pady=10, sticky="nsew")
+
         # 入金合計額
-        self.money_lbl = ttk.Label(self.root, text='入れた金額： ' + '0', font=self.font, anchor=tk.W)
-        self.money_lbl.place(x= 100, y=100)
+        self.money_lbl = ttk.Label(self.label_frame, text='入れた金額： ' + '0', font=self.font, anchor=tk.W)
+        self.money_lbl.grid(row=0,column=0,padx=10,pady=10)
 
         # 入金ボタン
-        self.m_100 = tk.Button(self.root, text="Enter 100 Yen", font=self.font, command=self.enter_money_100)
-        self.m_100.place(x= 100, y=140)
+        self.m_100 = tk.Button(self.label_frame, text="Enter 100 Yen", font=self.font, command=self.enter_money_100)
+        self.m_100.grid(row=1,column=0,padx=10,pady=10)
 
-        self.m_1000 = tk.Button(self.root, text="Enter 1000 Yen", font=self.font, command=self.enter_money_1000)
-        self.m_1000.place(x=100, y= 190)
+        self.m_1000 = tk.Button(self.label_frame, text="Enter 1000 Yen", font=self.font, command=self.enter_money_1000)
+        self.m_1000.grid(row=2,column=0,padx=10,pady=10)
+
+        # self.label_frame2 = tk.LabelFrame(self.root, text='ルーレット', bd=2, relief=tk.GROOVE, padx=10, pady=10)
+        # self.label_frame2.grid(column=0, row=1, padx=10, pady=10, sticky="nsew")
 
         # 売上ボタン
-        self.total_sales = tk.Button(self.root, text="売上", font=self.font, command=self.show_total_sales)
+        # self.total_sales = tk.Button(self.root, text="売上", font=self.font, command=self.show_total_sales)
         
         # 売上ラベル
-        self.total_sales_label = ttk.Label(self.root, text='売上： ' + '0', font=self.font, anchor=tk.W)
-        
-
-    def update_maintenance_menu(self):
-        if self.p.maintenance_flag:
-            self.total_sales.place(x=100, y= 350)
-            self.total_sales_label.place(x= 100, y=400)
-        else:
-            self.total_sales.place_forget()
-            self.total_sales_label.place_forget()
+        # self.total_sales_label = ttk.Label(self.root, text='売上： ' + '0', font=self.font, anchor=tk.W)
 
 
     def show_total_sales(self):
@@ -141,42 +145,38 @@ class VDrink:
         self.drink_button_list = []
         self.add_drink_list = []
         self.create_drink()
-        self.add_drink()
         self.zaiko = parent.zaiko
-        self.update_maintenance_menu()
 
     # 飲み物ボタンを配置
     def create_drink(self):
         
-        x_span = 100
-        y_span = 100
+        # フレーム
+        self.label_frame = tk.LabelFrame(self.root, text='Drinks', bd=2, relief=tk.GROOVE, padx=10, pady=10)
+        self.label_frame.grid(column=0, row=0, padx=10, pady=10, sticky="nsew")
+
         max_flap = 5
         flap = 0
+        row = 0
+        col = 0
         for name, price in self.auto_machine.drink_list.items():
-            lbl = tk.Label(self.root, text=name, font=self.font)
-            btn = tk.Button(self.root, text=str(price), font=self.font, command=lambda p=price, n=name: self.purchase(p,n))
+            lbl = tk.Label(self.label_frame, text=name, font=self.font)
+            btn = tk.Button(self.label_frame, text=str(price), font=self.font, command=lambda p=price, n=name: self.purchase(p,n))
 
             btn['state'] = tk.DISABLED
-            lbl.place(x= 300 + x_span, y = y_span)
-            btn.place(x= 300 + x_span, y = 50 + y_span)
+
+            # グリッド配置
+            lbl.grid(row=row, column=col * 2, padx=5, pady=5)
+            btn.grid(row=row+1, column=col * 2, padx=5, pady=5)
 
             self.drink_button_list.append(btn)
-            x_span += 100
             flap += 1
-            if flap == max_flap:
-                y_span += 100
-                flap = 0
-                x_span = 100
+            col += 1
 
-    # 在庫追加ボタン
-    def add_drink(self):
-        span = 100
-        for name, _ in self.auto_machine.drink_list.items():
-            btn = tk.Button(self.root, text=str("追加:" + name), font=self.font, command=lambda n=name: self.add_zaiko(n))
-            
-            btn.place(x= 300 + span, y = 350)
-            self.add_drink_list.append(btn)
-            span += 200
+            if flap == max_flap:
+                row += 2
+                flap = 0
+                col = 0
+
 
     def add_zaiko(self, name):
         print(f'在庫追加:{name}')
@@ -202,10 +202,6 @@ class VDrink:
         # ルーレット
         self.ru = self.p.ru
         self.ru.roll_roulette()
-        # if self.ru.pos_r == 6:
-        #     print('当たりました')
-        # else:
-        #     print('ざんねん')
 
         # ログ出力
         print(f'購入商品：{name}, 購入金額:{price}')
@@ -227,13 +223,13 @@ class VDrink:
         # 在庫更新
         self.update_zaiko(name)
 
-    def update_maintenance_menu(self):
+    # def update_maintenance_menu(self):
         
-        if self.p.maintenance_flag:
-            self.add_drink()
-        else:
-            for btn in self.add_drink_list:
-                btn.place_forget()
+    #     if self.p.maintenance_flag:
+    #         self.add_drink()
+    #     else:
+    #         for btn in self.add_drink_list:
+    #             btn.place_forget()
 
     # 在庫確認
     def update_zaiko(self, name):
