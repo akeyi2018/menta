@@ -26,23 +26,32 @@ class Zaiko:
     def __init__(self) -> None:
         inventory_info ='inventory_info.json'
         self.ins = DrinkConfig(inventory_info)
-        self.product_list = self.ins.get_json_info()
+        # self.product_list = self.ins.get_json_info()
 
     # 
     def decrease_inventory(self, name):
-        if self.product_list[name] > 0:
-            new_size = self.product_list[name] - 1
+        product_list = self.ins.get_json_info()
+        if product_list[name] > 0:
+            new_size = product_list[name] - 1
             self.ins.set_json_info(name, new_size)
 
-    # 在庫数取得
-    def get_product_size(self, name):
-        if self.product_list[name] > 0:
+    # 在庫ありなし
+    def check_product(self, name):
+        product_list = self.ins.get_json_info()
+        if product_list[name] > 0:
             return True
         else:
             return False
+        
+    def get_product_size(self, name):
+        return self.ins.get_json_info()[name]
+        
     # 在庫追加
     def add_product(self, name):
-        self.li[name].put(name)
+        product_list = self.ins.get_json_info()
+        if product_list[name] > 0:
+            new_size = product_list[name] + 50
+            self.ins.set_json_info(name, new_size)
 
 class Zaiko_old:
 

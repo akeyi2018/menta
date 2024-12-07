@@ -46,7 +46,7 @@ class Application(tk.Frame):
         self.total_sales.grid(padx=5,pady=5)
 
     def mainte(self):
-        back_yard = Backyard(self.master)
+        back_yard = Backyard(self)
         back_yard.open_sub_window()
 
     def adjust_window_size(self):

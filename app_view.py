@@ -223,21 +223,13 @@ class VDrink:
         # 在庫更新
         self.update_zaiko(name)
 
-    # def update_maintenance_menu(self):
-        
-    #     if self.p.maintenance_flag:
-    #         self.add_drink()
-    #     else:
-    #         for btn in self.add_drink_list:
-    #             btn.place_forget()
-
     # 在庫確認
     def update_zaiko(self, name):
 
         key_list = list(self.auto_machine.drink_list.keys())
         val_list = list(self.auto_machine.drink_list.values())
         for name, price, btn in zip(key_list, val_list, self.drink_button_list):
-            if self.zaiko.get_product_size(name) > 0:
+            if self.zaiko.check_product(name) > 0:
                 btn['text'] = price
             else:
                 btn['text'] = '在庫切れ'
