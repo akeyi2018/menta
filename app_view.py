@@ -122,6 +122,7 @@ class VMoney:
         qr.add_data(text)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
+        img = img.resize((100,100))
         return img
 
     def show_total_sales(self):
