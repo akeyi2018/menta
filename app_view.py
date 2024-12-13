@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from PIL import Image, ImageTk
 import random
+import qrcode
 
 class Roulette:
     def __init__(self, parent) -> None:
@@ -75,7 +76,6 @@ class Roulette:
 
         self.roulette_list[self.pos_r].config(image=self.loadimage2)
         self.roulette_list[self.pos_r].image = self.loadimage2
-   
 
 class VMoney:
     def __init__(self, parent) -> None:
@@ -94,26 +94,35 @@ class VMoney:
         self.label_frame = tk.LabelFrame(self.root, text='決済', bd=2, relief=tk.GROOVE, padx=10, pady=10)
         self.label_frame.grid(column=1, row=0, padx=10, pady=10, sticky="nsew")
 
+        # 現金
+        self.label_frame_real_money = tk.LabelFrame(self.label_frame, text='現金', bd=2, relief=tk.GROOVE, padx=10, pady=10)
+        self.label_frame_real_money.grid(column=0, row=0, padx=10, pady=10, sticky="nsew")
+
         # 入金合計額
-        self.money_lbl = ttk.Label(self.label_frame, text='入れた金額： ' + '0', font=self.font, anchor=tk.W)
+        self.money_lbl = ttk.Label(self.label_frame_real_money, text='入れた金額： ' + '0', font=self.font, anchor=tk.W)
         self.money_lbl.grid(row=0,column=0,padx=10,pady=10)
 
         # 入金ボタン
-        self.m_100 = tk.Button(self.label_frame, text="Enter 100 Yen", font=self.font, command=self.enter_money_100)
+        self.m_100 = tk.Button(self.label_frame_real_money, text="Enter 100 Yen", font=self.font, command=self.enter_money_100)
         self.m_100.grid(row=1,column=0,padx=10,pady=10)
 
-        self.m_1000 = tk.Button(self.label_frame, text="Enter 1000 Yen", font=self.font, command=self.enter_money_1000)
+        self.m_1000 = tk.Button(self.label_frame_real_money, text="Enter 1000 Yen", font=self.font, command=self.enter_money_1000)
         self.m_1000.grid(row=2,column=0,padx=10,pady=10)
 
-        # self.label_frame2 = tk.LabelFrame(self.root, text='ルーレット', bd=2, relief=tk.GROOVE, padx=10, pady=10)
-        # self.label_frame2.grid(column=0, row=1, padx=10, pady=10, sticky="nsew")
+        # QR Code
+        self.label_frame_digital_money = tk.LabelFrame(self.label_frame, text='電子マネー', bd=2, relief=tk.GROOVE, padx=10, pady=10)
+        self.label_frame_digital_money.grid(column=1, row=0, padx=10, pady=10, sticky="nsew")
 
-        # 売上ボタン
-        # self.total_sales = tk.Button(self.root, text="売上", font=self.font, command=self.show_total_sales)
-        
-        # 売上ラベル
-        # self.total_sales_label = ttk.Label(self.root, text='売上： ' + '0', font=self.font, anchor=tk.W)
+        self.imgtk = ImageTk.PhotoImage(self.makeQR('hello_world'))
+        self.qr_lbl = ttk.Label(self.label_frame_digital_money,text='',image=self.imgtk)
+        self.qr_lbl.grid(row=0,column=0,padx=10,pady=10)
 
+    def makeQR(self, text):
+        qr = qrcode.QRCode(box_size=10, border=2)
+        qr.add_data(text)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        return img
 
     def show_total_sales(self):
         self.m_money = self.p.m_money 
