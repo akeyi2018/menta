@@ -113,15 +113,19 @@ class VMoney:
         self.label_frame_digital_money = tk.LabelFrame(self.label_frame, text='電子マネー', bd=2, relief=tk.GROOVE, padx=10, pady=10)
         self.label_frame_digital_money.grid(column=1, row=0, padx=10, pady=10, sticky="nsew")
 
-        self.imgtk = ImageTk.PhotoImage(self.makeQR('hello_world'))
+        self.imgtk = ImageTk.PhotoImage(self.makeQR('____'))
         self.qr_lbl = ttk.Label(self.label_frame_digital_money,text='',image=self.imgtk)
+        # self.qr_lbl = ttk.Label(self.label_frame_digital_money,text='電子決済')
         self.qr_lbl.grid(row=0,column=0,padx=10,pady=10)
 
     def makeQR(self, text):
         qr = qrcode.QRCode(box_size=10, border=2)
         qr.add_data(text)
         qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
+        if text == '____':
+            img = qr.make_image(fill_color="white", back_color="white")
+        else:
+            img = qr.make_image(fill_color="black", back_color="white")
         img = img.resize((100,100))
         return img
 
@@ -144,7 +148,7 @@ class VMoney:
         self.money_lbl.config(text=m_txt)
 
         # ドリンクボタンの更新
-        self.v_drink.update(self.current_money)
+        # self.v_drink.update(self.current_money)
 
 class VDrink:
     def __init__(self, parent) -> None:
@@ -155,6 +159,7 @@ class VDrink:
         self.drink_button_list = []
         self.add_drink_list = []
         self.create_drink()
+        self.update()
         self.zaiko = parent.zaiko
 
     # 飲み物ボタンを配置
@@ -170,7 +175,8 @@ class VDrink:
         col = 0
         for name, price in self.auto_machine.drink_list.items():
             lbl = tk.Label(self.label_frame, text=name, font=self.font)
-            btn = tk.Button(self.label_frame, text=str(price), font=self.font, command=lambda p=price, n=name: self.purchase(p,n))
+            btn = tk.Button(self.label_frame, text=str(price), font=self.font, bg='white',
+                            command=lambda p=price, n=name: self.purchase(p,n))
 
             btn['state'] = tk.DISABLED
 
@@ -195,20 +201,17 @@ class VDrink:
         self.update_zaiko(name)
     
     # 飲み物更新
-    def update(self, val):
-        # print(val)
+    def update(self):
         # お金が充足した場合、ボタンを有効にする
         for btn in self.drink_button_list:
             if btn.cget("text") == '在庫切れ':
                 pass
-            elif val >= int(btn.cget("text")):
-                btn['state'] = tk.NORMAL
+            # elif val >= int(btn.cget("text")):
+                # btn['state'] = tk.NORMAL
             else:
-                btn['state'] = tk.DISABLED
+                btn['state'] = tk.NORMAL
 
-    # 商品購入
-    def purchase(self, price, name):
-
+    def pay_cash(self, name, price):
         # ルーレット
         self.ru = self.p.ru
         self.ru.roll_roulette()
@@ -233,7 +236,37 @@ class VDrink:
         # 在庫更新
         self.update_zaiko(name)
 
-    # 在庫確認
+
+    # 商品購入
+    def purchase(self, price, name):
+        
+        # 現金を入れているかを判断
+        self.v_money = self.p.v_money
+        # print(int(self.v_money))
+        if self.v_money.current_money >= price:
+            self.pay_cash(name, price)
+
+        # 電子決済
+        else:
+            # 選択したボタンの色の変更
+            self.update_btn(name)
+            
+            # QR code更新
+            self.img = ImageTk.PhotoImage(self.v_money.makeQR(name))
+            self.v_money.qr_lbl.config(image=self.img)
+            self.v_money.qr_lbl.update()
+
+      
+
+    def update_btn(self, t_name):
+        key_list = list(self.auto_machine.drink_list.keys())
+        for name, btn in zip(key_list, self.drink_button_list):
+            if name == t_name:
+                btn['bg'] = 'blue'
+            else:
+                btn['bg'] = 'white'
+
+    # 在庫更新
     def update_zaiko(self, name):
 
         key_list = list(self.auto_machine.drink_list.keys())
