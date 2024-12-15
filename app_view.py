@@ -263,8 +263,10 @@ class VDrink:
         for name, btn in zip(key_list, self.drink_button_list):
             if name == t_name:
                 btn['bg'] = 'blue'
+                btn['fg'] = 'white'
             else:
                 btn['bg'] = 'white'
+                btn['fg'] = 'black'
 
     # 在庫更新
     def update_zaiko(self, name):
