@@ -256,8 +256,6 @@ class VDrink:
             self.v_money.qr_lbl.config(image=self.img)
             self.v_money.qr_lbl.update()
 
-      
-
     def update_btn(self, t_name):
         key_list = list(self.auto_machine.drink_list.keys())
         for name, btn in zip(key_list, self.drink_button_list):

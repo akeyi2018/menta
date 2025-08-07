@@ -67,7 +67,8 @@ class Application(tk.Frame):
             # 右端と下端の最大値を計算
             max_width = max(max_width, x + width)
             max_height = max(max_height, y + height)
-
+        
+        
         # 親ウィンドウのサイズを調整
         self.master.geometry(f"{max_width + 20}x{max_height + 20}")  # 余白を追加
 
