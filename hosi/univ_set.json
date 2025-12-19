@@ -1,0 +1,43 @@
+{
+  "BALL_COLOR": [1.0, 0.0, 0.0, 0.0],
+  "BALL_RADIUS": 0.08,
+  "RADIUS_MIN":1,
+  "RADIUS_MAX":100,
+  "BALL_SLICES": 16,
+  "BALL_STACKS": 16,
+  "MOVE_SPEED":4.0,
+  "ROLL_SPEED":4.0,
+  "LIGHT_POSITION_Y": -10.0,
+  "BALL_AREA": {
+    "X_MAX": 12.0,
+    "X_MIN": -12.0,
+    "Z_MAX": -10,
+    "Z_MIN": -52,
+    "Y_MIN": -8,
+    "Y_MAX": 4,
+    "LIMIT_X": 0.0,
+    "LIMIT_Y": 0.0
+  },
+  "INTERVAL": {
+    "X": 1,
+    "Y": 1,
+    "Z": 1
+  },
+  "FPS": 60,
+  "BALL_COUNT": 700,
+  "BALL_VIEW": true,
+  "BALL_COUNT_MAX": 800,
+  "BALL_COUNT_MIN": 100,
+  "view_center": [0.0, 100.0, 0.0],
+  "view_position": [10.0, -200.0, 15.0],
+  "WINDOW_SIZE": {
+    "WIDTH": 1920,
+    "HEIGHT": 1080
+  },
+   "HOST": {
+    "IP": "127.0.0.1",
+    "PORT_01": 5051,
+    "PORT_02": 5052,
+    "PORT_03": 5053
+  }
+}
